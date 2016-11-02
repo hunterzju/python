@@ -64,7 +64,7 @@ for i in range(200):
 	for m in range(100):
 		xs.append(train_data[i*100+m])
 		ys.append(tr_label[i*100+m])
-	sess.run(train_step,feed_dict{x:xs,y :ys})
+	sess.run(train_step,feed_dict={x:xs,y_:ys})
 
 with tf.Session():
 	print(W.eval())
