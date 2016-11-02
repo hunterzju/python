@@ -6,7 +6,7 @@ import tensorflow as tf
 
 filename = '/mnt/f/coding/bigdata/signature/train.csv'
 
-train_label = []
+tr_lab_indices = []
 train_data = [[]]
 
 try:
@@ -21,7 +21,7 @@ try:
 				pic = []
 				for item in row:
 					if c == 0:
-						train_label.append(item)
+						tr_lab_indices.append(item)
 					else:
 						pic.append(int(item))
 					c += 1
@@ -32,9 +32,9 @@ except csv.Error as e:
 	print("Eorror reading csv file at line %s:%s" % (reader.line_num,e))
 	sys.exit(-1)
 	
-# print(train_label)
-# for datarow in train_data:
-	# print(datarow)
+#convert label to one_hot
+indices = tf.constant(tr_lab_indices, tf.int64)
+train_label = tf.one_hot(indices, 10, 1, 0, -1)
 
 #train use TensorFlow
 
@@ -55,16 +55,21 @@ train_step = tf.train.GradientDescentOptimizer(0.01).minimize(cross_entrop)
 init = tf.initialize_all_variables()
 sess = tf.Session()
 sess.run(init)
+with tf.Session():
+	tr_label = train_label.eval()
 
 for i in range(200):
 	xs = []
 	ys = []
 	for m in range(100):
 		xs.append(train_data[i*100+m])
-		ys.append(train_label[i*100+m])
+		ys.append(tr_label[i*100+m])
 	sess.run(train_step,feed_dict{x:xs,y :ys})
 
-
+with tf.Session():
+	print(W.eval())
+	print("==========================")
+	print(b.eval())
 
 
 	
