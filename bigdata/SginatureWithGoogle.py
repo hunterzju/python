@@ -4,7 +4,7 @@
 import csv
 import tensorflow as tf
 
-filename = '/mnt/f/coding/bigdata/signature/train.csv'
+filename = '/home/coding/python/bigdata/signature/train.csv'
 
 tr_lab_indices = []
 train_data = [[]]
