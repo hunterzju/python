@@ -3,6 +3,7 @@
 
 import csv
 import tensorflow as tf
+import numpy as np
 
 filename = '/home/coding/python/bigdata/signature/train.csv'
 
@@ -21,7 +22,7 @@ try:
 				pic = []
 				for item in row:
 					if c == 0:
-						tr_lab_indices.append(item)
+						tr_lab_indices.append(int(item))
 					else:
 						pic.append(int(item))
 					c += 1
@@ -41,8 +42,8 @@ train_label = tf.one_hot(indices, 10, 1, 0, -1)
 #compute model
 x = tf.placeholder(tf.float32,[None,784])
 
-W = tf.Variable(tf.zeros[784,10])
-b = tf.Variable(tf.zeros[10])
+W = tf.Variable(tf.zeros([784,10]))
+b = tf.Variable(tf.zeros([10]))
 
 y = tf.nn.softmax(tf.matmul(x,W) + b)
 
@@ -55,21 +56,19 @@ train_step = tf.train.GradientDescentOptimizer(0.01).minimize(cross_entrop)
 init = tf.initialize_all_variables()
 sess = tf.Session()
 sess.run(init)
-with tf.Session():
-	tr_label = train_label.eval()
-
-for i in range(200):
-	xs = []
-	ys = []
-	for m in range(100):
-		xs.append(train_data[i*100+m])
-		ys.append(tr_label[i*100+m])
-	sess.run(train_step,feed_dict={x:xs,y_:ys})
+sess.run(train_label)
 
 with tf.Session():
-	print(W.eval())
-	print("==========================")
-	print(b.eval())
+	tr_label = train_label.eval().tolist()
+	
+sess.run(train_step,feed_dict={x:train_data,y_:tr_label})	
+
+#save the model
+saver = tf.train.Saver()
+with tf.Session() as sess1:
+	saver.restore(sess1,"/home/coding/python/bigdata/signature/model.ckpt")
+	print("save model success!")
+	
 
 
 	
