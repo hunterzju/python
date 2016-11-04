@@ -56,12 +56,15 @@ train_step = tf.train.GradientDescentOptimizer(0.01).minimize(cross_entrop)
 init = tf.initialize_all_variables()
 sess = tf.Session()
 sess.run(init)
-sess.run(train_label)
+
+del train_data[0]
+tr_data = np.array(train_data)
 
 with tf.Session():
-	tr_label = train_label.eval().tolist()
+	tr_label_list = train_label.eval().tolist()
+	tr_label = np.array(tr_label_list)
 	
-sess.run(train_step,feed_dict={x:train_data,y_:tr_label})	
+sess.run(train_step,feed_dict={x:tr_data,y_:tr_label})	
 
 #save the model
 saver = tf.train.Saver()

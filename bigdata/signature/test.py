@@ -10,7 +10,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 print("Download Done!")
-print(mnist)
+print(mnist.train.next_batch(10))
 #x = tf.placeholder(tf.float32, [None, 784])
 #
 ## paras
@@ -33,7 +33,7 @@ print(mnist)
 #
 ## train
 #for i in range(2):
-#	batch_xs, batch_ys = mnist.train.next_batch(100)
+#	batch_xs, batch_ys = mnist.train.next_batch(10)
 #	print(batch_ys)
 #	#sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
 #
